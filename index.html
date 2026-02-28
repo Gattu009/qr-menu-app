@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Royal Bites</title>
+  <title>ZESTRO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Google Font -->
@@ -20,6 +20,7 @@
       text-align: center;
       font-weight: 700;
       margin-bottom: 5px;
+      letter-spacing: 2px;
     }
 
     .subtitle {
@@ -105,31 +106,31 @@
 </head>
 <body>
 
-<h1>🍽 Royal Bites</h1>
-<div class="subtitle">Fine Taste • Fresh Ingredients • Fast Service</div>
+<h1>🍽 ZESTRO</h1>
+<div class="subtitle">Sweet Treats • Cool Bites • Quick Snacks</div>
 
 <div class="menu-card">
   <div>
-    🍕 Margherita Pizza <br>
-    <span class="price">₹250</span>
+    🍮 Gulab Jamun <br>
+    <span class="price">₹60</span>
   </div>
-  <button onclick="addToCart('Pizza',250)">Add</button>
+  <button onclick="addToCart('Gulab Jamun',60)">Add</button>
 </div>
 
 <div class="menu-card">
   <div>
-    🍔 Veg Burger <br>
-    <span class="price">₹120</span>
+    🍨 Ice Cream <br>
+    <span class="price">₹40</span>
   </div>
-  <button onclick="addToCart('Burger',120)">Add</button>
+  <button onclick="addToCart('Ice Cream',40)">Add</button>
 </div>
 
 <div class="menu-card">
   <div>
-    🥤 Cold Coffee <br>
-    <span class="price">₹90</span>
+    🍟 Chips <br>
+    <span class="price">₹30</span>
   </div>
-  <button onclick="addToCart('Coffee',90)">Add</button>
+  <button onclick="addToCart('Chips',30)">Add</button>
 </div>
 
 <div id="cart">
@@ -164,8 +165,8 @@
       return;
     }
 
-    let upiId = "9701450374@ybl";  // 🔥 CHANGE THIS
-    let name = "Royal Bites";
+    let upiId = "9701450374@ybl";
+    let name = "ZESTRO";
 
     let url = `phonepe://pay?pa=${upiId}&pn=${name}&am=${total}&cu=INR`;
 
