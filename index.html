@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Royal Bites</title>
+  <title>Zestro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
@@ -46,8 +46,8 @@
     }
 
     .price {
-      font-weight: 500;
       color: #ffb347;
+      font-weight: 500;
     }
 
     button {
@@ -58,7 +58,6 @@
       color: white;
       cursor: pointer;
       font-weight: 500;
-      transition: 0.3s;
     }
 
     button:hover {
@@ -98,27 +97,48 @@
     }
 
     #qr-section {
-      text-align: center;
-      margin-top: 30px;
       display: none;
+      margin-top: 30px;
       background: #2e2e2e;
       padding: 20px;
       border-radius: 15px;
+      text-align: center;
       box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
 
     #qr-section img {
+      width: 250px;
       margin-top: 15px;
       border-radius: 10px;
+    }
+
+    .order-summary {
+      margin-top: 20px;
+      text-align: left;
+      background: #3a3a3a;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .success-btn {
+      margin-top: 15px;
+      background: #2196f3;
+      width: 100%;
+      padding: 10px;
+    }
+
+    .success-btn:hover {
+      background: #42a5f5;
     }
 
   </style>
 </head>
 <body>
 
-<h1>🍽 Royal Bites</h1>
-<div class="subtitle">Fine Taste • Fresh Ingredients • Fast Service</div>
+<h1>🍽 Zestro</h1>
+<div class="subtitle">Fresh • Fast • Delicious</div>
 
+<!-- MENU -->
 <div class="menu-card">
   <div>
     🍕 Margherita Pizza <br>
@@ -143,6 +163,7 @@
   <button onclick="addToCart('Cold Coffee',90)">Add</button>
 </div>
 
+<!-- CART -->
 <div id="cart">
   <h2>🛒 Your Cart</h2>
   <div id="cart-items"></div>
@@ -150,10 +171,20 @@
   <button class="checkout-btn" onclick="checkout()">Checkout</button>
 </div>
 
+<!-- QR SECTION -->
 <div id="qr-section">
   <h2>Scan to Pay</h2>
-  <p>Please scan using any UPI app</p>
-  <img id="qr-image" width="250">
+  <p>Please scan the QR and enter the total amount shown.</p>
+
+  <img src="upi-qr.png" alt="UPI QR Code">
+
+  <div class="order-summary">
+    <h3>Order Summary</h3>
+    <div id="summary-items"></div>
+    <div class="total">Total: ₹<span id="summary-total"></span></div>
+  </div>
+
+  <button class="success-btn" onclick="paymentDone()">Payment Done</button>
 </div>
 
 <script>
@@ -181,16 +212,22 @@
       return;
     }
 
-    let upiId = "9701450374@ybl";   // 🔥 PUT YOUR REAL UPI ID
-    let name = encodeURIComponent("Royal Bites");
-    let note = encodeURIComponent("Food Order");
-
-    let upiUrl = `upi://pay?pa=${upiId}&pn=${name}&am=${total}&cu=INR&tn=${note}`;
-
-    let qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(upiUrl);
-
-    document.getElementById("qr-image").src = qrCodeUrl;
+    document.getElementById("cart").style.display = "none";
     document.getElementById("qr-section").style.display = "block";
+
+    let summaryDiv = document.getElementById("summary-items");
+    summaryDiv.innerHTML = "";
+
+    cart.forEach(item => {
+      summaryDiv.innerHTML += `<div>${item.name} - ₹${item.price}</div>`;
+    });
+
+    document.getElementById("summary-total").innerText = total;
+  }
+
+  function paymentDone() {
+    alert("Thank you for your order! 🎉");
+    location.reload();
   }
 </script>
 
