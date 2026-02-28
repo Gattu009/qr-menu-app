@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Zestro</title>
+  <title>Royal Bites</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
   <style>
@@ -46,8 +47,8 @@
     }
 
     .price {
-      color: #ffb347;
       font-weight: 500;
+      color: #ffb347;
     }
 
     button {
@@ -58,6 +59,7 @@
       color: white;
       cursor: pointer;
       font-weight: 500;
+      transition: 0.3s;
     }
 
     button:hover {
@@ -72,6 +74,10 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
 
+    #cart h2 {
+      margin-top: 0;
+    }
+
     .cart-item {
       font-size: 14px;
       margin-bottom: 5px;
@@ -84,7 +90,7 @@
       margin-top: 10px;
     }
 
-    .checkout-btn {
+    .pay-btn {
       width: 100%;
       margin-top: 15px;
       padding: 12px;
@@ -92,59 +98,22 @@
       background: #4caf50;
     }
 
-    .checkout-btn:hover {
+    .pay-btn:hover {
       background: #66bb6a;
     }
-
-    #qr-section {
-      display: none;
-      margin-top: 30px;
-      background: #2e2e2e;
-      padding: 20px;
-      border-radius: 15px;
-      text-align: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    }
-
-    #qr-section img {
-      width: 250px;
-      margin-top: 15px;
-      border-radius: 10px;
-    }
-
-    .order-summary {
-      margin-top: 20px;
-      text-align: left;
-      background: #3a3a3a;
-      padding: 15px;
-      border-radius: 10px;
-    }
-
-    .success-btn {
-      margin-top: 15px;
-      background: #2196f3;
-      width: 100%;
-      padding: 10px;
-    }
-
-    .success-btn:hover {
-      background: #42a5f5;
-    }
-
   </style>
 </head>
 <body>
 
-<h1>🍽 Zestro</h1>
-<div class="subtitle">Fresh • Fast • Delicious</div>
+<h1>🍽 Royal Bites</h1>
+<div class="subtitle">Fine Taste • Fresh Ingredients • Fast Service</div>
 
-<!-- MENU -->
 <div class="menu-card">
   <div>
     🍕 Margherita Pizza <br>
     <span class="price">₹250</span>
   </div>
-  <button onclick="addToCart('Margherita Pizza',250)">Add</button>
+  <button onclick="addToCart('Pizza',250)">Add</button>
 </div>
 
 <div class="menu-card">
@@ -152,7 +121,7 @@
     🍔 Veg Burger <br>
     <span class="price">₹120</span>
   </div>
-  <button onclick="addToCart('Veg Burger',120)">Add</button>
+  <button onclick="addToCart('Burger',120)">Add</button>
 </div>
 
 <div class="menu-card">
@@ -160,31 +129,14 @@
     🥤 Cold Coffee <br>
     <span class="price">₹90</span>
   </div>
-  <button onclick="addToCart('Cold Coffee',90)">Add</button>
+  <button onclick="addToCart('Coffee',90)">Add</button>
 </div>
 
-<!-- CART -->
 <div id="cart">
   <h2>🛒 Your Cart</h2>
   <div id="cart-items"></div>
   <div class="total">Total: ₹<span id="total">0</span></div>
-  <button class="checkout-btn" onclick="checkout()">Checkout</button>
-</div>
-
-<!-- QR SECTION -->
-<div id="qr-section">
-  <h2>Scan to Pay</h2>
-  <p>Please scan the QR and enter the total amount shown.</p>
-
-  <img src="upi-qr.png" alt="UPI QR Code">
-
-  <div class="order-summary">
-    <h3>Order Summary</h3>
-    <div id="summary-items"></div>
-    <div class="total">Total: ₹<span id="summary-total"></span></div>
-  </div>
-
-  <button class="success-btn" onclick="paymentDone()">Payment Done</button>
+  <button class="pay-btn" onclick="payNow()">💳 Pay via UPI</button>
 </div>
 
 <script>
@@ -206,28 +158,18 @@
     document.getElementById("total").innerText = total;
   }
 
-  function checkout() {
+  function payNow() {
     if(total === 0){
       alert("Cart is empty!");
       return;
     }
 
-    document.getElementById("cart").style.display = "none";
-    document.getElementById("qr-section").style.display = "block";
+    let upiId = "yourupiid@upi";  // 🔥 CHANGE THIS
+    let name = "Royal Bites";
 
-    let summaryDiv = document.getElementById("summary-items");
-    summaryDiv.innerHTML = "";
+    let url = `upi://pay?pa=${upiId}&pn=${name}&am=${total}&cu=INR`;
 
-    cart.forEach(item => {
-      summaryDiv.innerHTML += `<div>${item.name} - ₹${item.price}</div>`;
-    });
-
-    document.getElementById("summary-total").innerText = total;
-  }
-
-  function paymentDone() {
-    alert("Thank you for your order! 🎉");
-    location.reload();
+    window.location.href = url;
   }
 </script>
 
