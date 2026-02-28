@@ -3,8 +3,6 @@
 <head>
   <title>ZESTRO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
   <style>
@@ -18,15 +16,7 @@
 
     h1 {
       text-align: center;
-      font-weight: 700;
-      margin-bottom: 5px;
-      letter-spacing: 2px;
-    }
-
-    .subtitle {
-      text-align: center;
-      font-size: 14px;
-      color: #ccc;
+      letter-spacing: 3px;
       margin-bottom: 30px;
     }
 
@@ -38,18 +28,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.4);
       transition: 0.3s;
     }
 
     .menu-card:hover {
-      transform: scale(1.02);
       background: #3a3a3a;
-    }
-
-    .price {
-      font-weight: 500;
-      color: #ffb347;
+      transform: scale(1.02);
     }
 
     button {
@@ -60,38 +44,20 @@
       color: white;
       cursor: pointer;
       font-weight: 500;
-      transition: 0.3s;
     }
 
     button:hover {
-      background: #ff784e;
+      opacity: 0.9;
     }
 
     #cart {
-      margin-top: 40px;
+      margin-top: 30px;
       background: #2e2e2e;
       padding: 20px;
       border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
 
-    #cart h2 {
-      margin-top: 0;
-    }
-
-    .cart-item {
-      font-size: 14px;
-      margin-bottom: 5px;
-      color: #ddd;
-    }
-
-    .total {
-      font-size: 18px;
-      font-weight: 600;
-      margin-top: 10px;
-    }
-
-    .pay-btn {
+    .checkout-btn {
       width: 100%;
       margin-top: 15px;
       padding: 12px;
@@ -99,45 +65,61 @@
       background: #4caf50;
     }
 
-    .pay-btn:hover {
-      background: #66bb6a;
+    #qr-section {
+      display: none;
+      text-align: center;
+      margin-top: 30px;
     }
+
+    #qr-section img {
+      width: 260px;
+      margin-top: 15px;
+      border-radius: 12px;
+      background: white;
+      padding: 10px;
+    }
+
+    .sms-btn {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #2196f3;
+      font-size: 15px;
+    }
+
   </style>
 </head>
 <body>
 
 <h1>🍽 ZESTRO</h1>
-<div class="subtitle">Sweet Treats • Cool Bites • Quick Snacks</div>
 
 <div class="menu-card">
-  <div>
-    🍮 Gulab Jamun <br>
-    <span class="price">₹60</span>
-  </div>
+  🍮 Gulab Jamun - ₹60
   <button onclick="addToCart('Gulab Jamun',60)">Add</button>
 </div>
 
 <div class="menu-card">
-  <div>
-    🍨 Ice Cream <br>
-    <span class="price">₹40</span>
-  </div>
+  🍨 Ice Cream - ₹40
   <button onclick="addToCart('Ice Cream',40)">Add</button>
 </div>
 
 <div class="menu-card">
-  <div>
-    🍟 Chips <br>
-    <span class="price">₹30</span>
-  </div>
+  🍟 Chips - ₹30
   <button onclick="addToCart('Chips',30)">Add</button>
 </div>
 
 <div id="cart">
   <h2>🛒 Your Cart</h2>
   <div id="cart-items"></div>
-  <div class="total">Total: ₹<span id="total">0</span></div>
-  <button class="pay-btn" onclick="payNow()">💳 Pay via UPI</button>
+  <div><strong>Total: ₹<span id="total">0</span></strong></div>
+  <button class="checkout-btn" onclick="showQR()">Checkout</button>
+</div>
+
+<div id="qr-section">
+  <h2>📲 Scan & Pay</h2>
+  <p>Please scan the QR code and complete payment</p>
+  <img src="upi-qr.png" alt="UPI QR Code">
+  <button class="sms-btn" onclick="sendSMS()">I Have Paid</button>
 </div>
 
 <script>
@@ -154,23 +136,25 @@
     let cartDiv = document.getElementById("cart-items");
     cartDiv.innerHTML = "";
     cart.forEach(item => {
-      cartDiv.innerHTML += `<div class="cart-item">${item.name} - ₹${item.price}</div>`;
+      cartDiv.innerHTML += `<div>${item.name} - ₹${item.price}</div>`;
     });
     document.getElementById("total").innerText = total;
   }
 
-  function payNow() {
+  function showQR() {
     if(total === 0){
       alert("Cart is empty!");
       return;
     }
+    document.getElementById("qr-section").style.display = "block";
+    window.scrollTo(0, document.body.scrollHeight);
+  }
 
-    let upiId = "9701450374@ptyes";
-    let name = "ZESTRO";
-
-    let url = `tez://upi/pay?pa=${upiId}&pn=${name}&am=${total}&cu=INR&tn=PayNow`;
-
-    window.location.href = url;
+  function sendSMS() {
+    let phoneNumber = "9701450374";  // 🔥 CHANGE TO YOUR NUMBER
+    let message = `₹${total} payment done to ZESTRO`;
+    let smsURL = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
+    window.location.href = smsURL;
   }
 </script>
 
