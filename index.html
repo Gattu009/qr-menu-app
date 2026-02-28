@@ -65,39 +65,10 @@
       background: #4caf50;
     }
 
-    /* Loading Screen */
-    #loading-screen {
-      display: none;
-      text-align: center;
-      margin-top: 60px;
-      font-size: 20px;
-    }
-
-    .spinner {
-      margin: 20px auto;
-      border: 6px solid #444;
-      border-top: 6px solid #ffb347;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      100% { transform: rotate(360deg); }
-    }
-
-    /* QR Section */
     #qr-section {
       display: none;
       text-align: center;
       margin-top: 40px;
-      animation: fadeIn 0.8s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
     }
 
     #qr-section img {
@@ -115,21 +86,10 @@
       color: #ffb347;
     }
 
-    .done-btn {
+    .thank-you {
       margin-top: 20px;
-      width: 100%;
-      padding: 12px;
-      background: #2196f3;
-      font-size: 15px;
-    }
-
-    #thank-you {
-      display: none;
-      text-align: center;
-      margin-top: 30px;
-      font-size: 18px;
+      font-size: 16px;
       color: #4caf50;
-      animation: fadeIn 0.8s ease-in-out;
     }
 
   </style>
@@ -157,28 +117,17 @@
   <h2>🛒 Your Cart</h2>
   <div id="cart-items"></div>
   <div><strong>Total: ₹<span id="total">0</span></strong></div>
-  <button class="checkout-btn" onclick="startCheckout()">Checkout</button>
+  <button class="checkout-btn" onclick="showQR()">Checkout</button>
 </div>
 
-<!-- Loading Animation -->
-<div id="loading-screen">
-  <div>🍽 Preparing your bill...</div>
-  <div class="spinner"></div>
-</div>
-
-<!-- QR Section -->
 <div id="qr-section">
   <h2>📲 Scan & Pay</h2>
   <div class="amount-display">Pay ₹<span id="final-amount"></span></div>
   <img src="upi-qr.png" alt="UPI QR Code">
-  <button class="done-btn" onclick="showThankYou()">Payment Done</button>
-</div>
-
-<!-- Thank You -->
-<div id="thank-you">
-  🎉 Thank you for ordering from ZESTRO!  
-  <br><br>
-  Please show your payment confirmation at the counter.
+  <div class="thank-you">
+    🎉 Thank you for ordering from ZESTRO! <br>
+    Please complete the payment and show confirmation at the counter.
+  </div>
 </div>
 
 <script>
@@ -200,27 +149,14 @@
     document.getElementById("total").innerText = total;
   }
 
-  function startCheckout() {
+  function showQR() {
     if(total === 0){
       alert("Cart is empty!");
       return;
     }
 
-    document.getElementById("loading-screen").style.display = "block";
-    document.getElementById("qr-section").style.display = "none";
-    document.getElementById("thank-you").style.display = "none";
-
-    setTimeout(() => {
-      document.getElementById("loading-screen").style.display = "none";
-      document.getElementById("qr-section").style.display = "block";
-      document.getElementById("final-amount").innerText = total;
-      window.scrollTo(0, document.body.scrollHeight);
-    }, 2000);
-  }
-
-  function showThankYou() {
-    document.getElementById("thank-you").style.display = "block";
-    window.scrollTo(0, document.body.scrollHeight);
+    document.getElementById("qr-section").style.display = "block";
+    document.getElementById("final-amount").innerText = total;
   }
 </script>
 
