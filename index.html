@@ -4,7 +4,6 @@
   <title>Royal Bites</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
   <style>
@@ -74,10 +73,6 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
 
-    #cart h2 {
-      margin-top: 0;
-    }
-
     .cart-item {
       font-size: 14px;
       margin-bottom: 5px;
@@ -90,7 +85,7 @@
       margin-top: 10px;
     }
 
-    .pay-btn {
+    .checkout-btn {
       width: 100%;
       margin-top: 15px;
       padding: 12px;
@@ -98,9 +93,25 @@
       background: #4caf50;
     }
 
-    .pay-btn:hover {
+    .checkout-btn:hover {
       background: #66bb6a;
     }
+
+    #qr-section {
+      text-align: center;
+      margin-top: 30px;
+      display: none;
+      background: #2e2e2e;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    #qr-section img {
+      margin-top: 15px;
+      border-radius: 10px;
+    }
+
   </style>
 </head>
 <body>
@@ -113,7 +124,7 @@
     🍕 Margherita Pizza <br>
     <span class="price">₹250</span>
   </div>
-  <button onclick="addToCart('Pizza',250)">Add</button>
+  <button onclick="addToCart('Margherita Pizza',250)">Add</button>
 </div>
 
 <div class="menu-card">
@@ -121,7 +132,7 @@
     🍔 Veg Burger <br>
     <span class="price">₹120</span>
   </div>
-  <button onclick="addToCart('Burger',120)">Add</button>
+  <button onclick="addToCart('Veg Burger',120)">Add</button>
 </div>
 
 <div class="menu-card">
@@ -129,14 +140,20 @@
     🥤 Cold Coffee <br>
     <span class="price">₹90</span>
   </div>
-  <button onclick="addToCart('Coffee',90)">Add</button>
+  <button onclick="addToCart('Cold Coffee',90)">Add</button>
 </div>
 
 <div id="cart">
   <h2>🛒 Your Cart</h2>
   <div id="cart-items"></div>
   <div class="total">Total: ₹<span id="total">0</span></div>
-  <button class="pay-btn" onclick="payNow()">💳 Pay via UPI</button>
+  <button class="checkout-btn" onclick="checkout()">Checkout</button>
+</div>
+
+<div id="qr-section">
+  <h2>Scan to Pay</h2>
+  <p>Please scan using any UPI app</p>
+  <img id="qr-image" width="250">
 </div>
 
 <script>
@@ -158,18 +175,22 @@
     document.getElementById("total").innerText = total;
   }
 
-  function payNow() {
+  function checkout() {
     if(total === 0){
       alert("Cart is empty!");
       return;
     }
 
-    let upiId = "9701450374@ybl";  
-    let name = "Royal Bites";
+    let upiId = "9876543210@ybl";   // 🔥 PUT YOUR REAL UPI ID
+    let name = encodeURIComponent("Royal Bites");
+    let note = encodeURIComponent("Food Order");
 
-    let url = `upi://pay?pa=${upiId}&pn=${name}&am=${total}&cu=INR`;
+    let upiUrl = `upi://pay?pa=${upiId}&pn=${name}&am=${total}&cu=INR&tn=${note}`;
 
-    window.location.href = url;
+    let qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(upiUrl);
+
+    document.getElementById("qr-image").src = qrCodeUrl;
+    document.getElementById("qr-section").style.display = "block";
   }
 </script>
 
