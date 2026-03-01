@@ -36,17 +36,18 @@
       transform: scale(1.02);
     }
 
-    button {
+    .btn-group button {
       background: #ff5722;
       border: none;
-      padding: 8px 14px;
-      border-radius: 8px;
+      padding: 6px 12px;
+      border-radius: 6px;
       color: white;
       cursor: pointer;
       font-weight: 500;
+      margin-left: 5px;
     }
 
-    button:hover {
+    .btn-group button:hover {
       opacity: 0.9;
     }
 
@@ -63,117 +64,169 @@
       padding: 12px;
       font-size: 16px;
       background: #4caf50;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
     }
 
-    #qr-section {
+    #bill-section {
       display: none;
-      text-align: center;
       margin-top: 40px;
       background: #2e2e2e;
-      padding: 20px;
+      padding: 25px;
       border-radius: 15px;
+      animation: fadeIn 0.4s ease-in-out;
     }
 
-    #qr-section img {
-      width: 250px;
-      margin-top: 20px;
-      border-radius: 12px;
-      background: white;
-      padding: 10px;
+    .bill-header {
+      text-align: center;
+      font-size: 22px;
+      margin-bottom: 15px;
+      letter-spacing: 2px;
     }
 
-    .app-buttons {
+    .bill-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .total-amount {
       margin-top: 15px;
-    }
-
-    .app-buttons button {
-      margin: 5px;
-      background: #3a3a3a;
-    }
-
-    .note {
-      margin-top: 20px;
-      font-size: 14px;
+      font-size: 20px;
+      font-weight: bold;
       color: #ffb347;
+      text-align: right;
     }
 
+    .payment-note {
+      margin-top: 15px;
+      text-align: center;
+      color: #4caf50;
+      font-size: 14px;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
   </style>
 </head>
 <body>
 
 <h1>🍽 ZESTRO</h1>
 
+<!-- MENU ITEMS -->
+
 <div class="menu-card">
-  🍮 Gulab Jamun - ₹60
-  <button onclick="addToCart('Gulab Jamun',60)">Add</button>
+  🍯 Royal Jamun Delight - ₹50
+  <div class="btn-group">
+    <button onclick="addItem('Royal Jamun Delight',50)">+</button>
+    <button onclick="removeItem('Royal Jamun Delight',50)">-</button>
+  </div>
 </div>
 
 <div class="menu-card">
-  🍨 Ice Cream - ₹40
-  <button onclick="addToCart('Ice Cream',40)">Add</button>
+  🌮 Chaat Fusion Crunch - ₹30
+  <div class="btn-group">
+    <button onclick="addItem('Chaat Fusion Crunch',30)">+</button>
+    <button onclick="removeItem('Chaat Fusion Crunch',30)">-</button>
+  </div>
 </div>
 
 <div class="menu-card">
-  🍟 Chips - ₹30
-  <button onclick="addToCart('Chips',30)">Add</button>
+  🧠 Brain Buster - ₹15
+  <div class="btn-group">
+    <button onclick="addItem('Brain Buster',15)">+</button>
+    <button onclick="removeItem('Brain Buster',15)">-</button>
+  </div>
 </div>
+
+<!-- CART -->
 
 <div id="cart">
   <h2>🛒 Your Cart</h2>
   <div id="cart-items"></div>
   <div><strong>Total: ₹<span id="total">0</span></strong></div>
-  <button class="checkout-btn" onclick="showPayment()">Checkout</button>
+  <button class="checkout-btn" onclick="generateBill()">Checkout</button>
 </div>
 
-<div id="qr-section">
-  <h2>📲 Choose Payment App</h2>
+<!-- BILL SECTION -->
 
-  <div class="app-buttons">
-    <button onclick="openUPI()">📱 PhonePe</button>
-    <button onclick="openUPI()">💳 GPay</button>
-    <button onclick="openUPI()">🏦 Paytm</button>
-  </div>
-
-  <img src="upi-qr.png" alt="UPI QR Code">
-
-  <div class="note">
-    Please enter the total amount manually in your payment app.<br>
-    If app does not open, scan the QR above.<br><br>
-    🎉 Thank you for choosing ZESTRO!
+<div id="bill-section">
+  <div class="bill-header">🧾 ZESTRO BILL</div>
+  <div id="bill-items"></div>
+  <div class="total-amount">Total: ₹<span id="bill-total"></span></div>
+  <div class="payment-note">
+    💳 Payment should be done at the counter.<br>
+    Please show this bill while paying.
   </div>
 </div>
 
 <script>
-  let cart = [];
-  let total = 0;
-  let upiID = "9701450374@ybl"; // 🔴 CHANGE THIS TO YOUR REAL UPI ID
+  let cart = {};
 
-  function addToCart(name, price) {
-    cart.push({name, price});
-    total += price;
+  function addItem(name, price) {
+    if (cart[name]) {
+      cart[name].quantity++;
+    } else {
+      cart[name] = { price: price, quantity: 1 };
+    }
+    updateCart();
+  }
+
+  function removeItem(name, price) {
+    if (cart[name]) {
+      cart[name].quantity--;
+      if (cart[name].quantity <= 0) {
+        delete cart[name];
+      }
+    }
     updateCart();
   }
 
   function updateCart() {
     let cartDiv = document.getElementById("cart-items");
+    let total = 0;
     cartDiv.innerHTML = "";
-    cart.forEach(item => {
-      cartDiv.innerHTML += `<div>${item.name} - ₹${item.price}</div>`;
-    });
+
+    for (let item in cart) {
+      let itemTotal = cart[item].price * cart[item].quantity;
+      total += itemTotal;
+
+      cartDiv.innerHTML += 
+        `<div>${item} x${cart[item].quantity} - ₹${itemTotal}</div>`;
+    }
+
     document.getElementById("total").innerText = total;
   }
 
-  function showPayment() {
-    if(total === 0){
+  function generateBill() {
+    let billSection = document.getElementById("bill-section");
+    let billItems = document.getElementById("bill-items");
+    let total = 0;
+
+    if (Object.keys(cart).length === 0) {
       alert("Cart is empty!");
       return;
     }
-    document.getElementById("qr-section").style.display = "block";
-  }
 
-  function openUPI(){
-    let upiLink = `paytmmp://pay?pa=${upiID}&pn=User1&tn=Test UPI&am=${total}&cu=INR&mc=1234&tr=01234`;
-    window.location.href = upiLink;
+    billItems.innerHTML = "";
+
+    for (let item in cart) {
+      let itemTotal = cart[item].price * cart[item].quantity;
+      total += itemTotal;
+
+      billItems.innerHTML += `
+        <div class="bill-item">
+          <span>${item} x${cart[item].quantity}</span>
+          <span>₹${itemTotal}</span>
+        </div>`;
+    }
+
+    document.getElementById("bill-total").innerText = total;
+    billSection.style.display = "block";
   }
 </script>
 
