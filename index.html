@@ -1,150 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>ZESTRO</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, #1c1c1c, #2b2b2b);
-      color: white;
-      padding: 20px;
-    }
-
-    h1 {
-      text-align: center;
-      letter-spacing: 3px;
-      margin-bottom: 30px;
-    }
-
-    .menu-card {
-      background: #2e2e2e;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: 0.3s;
-    }
-
-    .menu-card:hover {
-      background: #3a3a3a;
-      transform: scale(1.02);
-    }
-
-    button {
-      background: #ff5722;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 8px;
-      color: white;
-      cursor: pointer;
-      font-weight: 500;
-    }
-
-    button:hover {
-      opacity: 0.9;
-    }
-
-    #cart {
-      margin-top: 30px;
-      background: #2e2e2e;
-      padding: 20px;
-      border-radius: 15px;
-    }
-
-    .checkout-btn {
-      width: 100%;
-      margin-top: 15px;
-      padding: 12px;
-      font-size: 16px;
-      background: #4caf50;
-    }
-
-    #qr-section {
-      display: none;
-      text-align: center;
-      margin-top: 40px;
-      background: #2e2e2e;
-      padding: 20px;
-      border-radius: 15px;
-    }
-
-    #qr-section img {
-      width: 250px;
-      margin-top: 15px;
-      border-radius: 12px;
-      background: white;
-      padding: 10px;
-    }
-
-    .app-buttons {
-      margin-top: 15px;
-    }
-
-    .app-buttons button {
-      margin: 5px;
-      background: #3a3a3a;
-    }
-
-    .thank-you {
-      margin-top: 20px;
-      font-size: 15px;
-      color: #4caf50;
-    }
-
-  </style>
-</head>
-<body>
-
-<h1>🍽 ZESTRO</h1>
-
-<div class="menu-card">
-  🍮 Gulab Jamun - ₹60
-  <button onclick="addToCart('Gulab Jamun',60)">Add</button>
-</div>
-
-<div class="menu-card">
-  🍨 Ice Cream - ₹40
-  <button onclick="addToCart('Ice Cream',40)">Add</button>
-</div>
-
-<div class="menu-card">
-  🍟 Chips - ₹30
-  <button onclick="addToCart('Chips',30)">Add</button>
-</div>
-
-<div id="cart">
-  <h2>🛒 Your Cart</h2>
-  <div id="cart-items"></div>
-  <div><strong>Total: ₹<span id="total">0</span></strong></div>
-  <button class="checkout-btn" onclick="showQR()">Checkout</button>
-</div>
-
-<div id="qr-section">
-  <h2>📲 Choose Payment App</h2>
-
-  <div class="app-buttons">
-    <button onclick="selectApp('PhonePe')">📱 PhonePe</button>
-    <button onclick="selectApp('Google Pay')">💳 GPay</button>
-    <button onclick="selectApp('Paytm')">🏦 Paytm</button>
-  </div>
-
-  <img src="upi-qr.png" alt="UPI QR Code">
-
-  <div class="thank-you">
-    ⚠ Please enter the total amount manually in your selected app.<br>
-    🎉 Thank you for ordering from ZESTRO!
-  </div>
-</div>
-
 <script>
   let cart = [];
   let total = 0;
+  let upiID = "yourupiid@upi";   // 👈 CHANGE THIS
 
   function addToCart(name, price) {
     cart.push({name, price});
@@ -166,14 +23,13 @@
       alert("Cart is empty!");
       return;
     }
-
     document.getElementById("qr-section").style.display = "block";
   }
 
-  function selectApp(appName){
-    alert("You selected " + appName + ". Please scan the QR and enter ₹" + total + " manually.");
+  function openApp(appName){
+    let upiLink = `upi://pay?pa=${upiID}&pn=ZESTRO`;
+
+    // Redirect to UPI app
+    window.location.href = upiLink;
   }
 </script>
-
-</body>
-</html>
