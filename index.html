@@ -69,54 +69,54 @@
       display: none;
       text-align: center;
       margin-top: 40px;
+      background: #2e2e2e;
+      padding: 20px;
+      border-radius: 15px;
     }
 
     #qr-section img {
-      width: 260px;
+      width: 250px;
       margin-top: 15px;
       border-radius: 12px;
       background: white;
       padding: 10px;
     }
 
-    .amount-display {
-      font-size: 22px;
-      font-weight: bold;
-      margin-top: 10px;
-      color: #ffb347;
+    .app-buttons {
+      margin-top: 15px;
+    }
+
+    .app-buttons button {
+      margin: 5px;
+      background: #3a3a3a;
     }
 
     .thank-you {
       margin-top: 20px;
-      font-size: 16px;
+      font-size: 15px;
       color: #4caf50;
     }
+
   </style>
 </head>
 <body>
 
 <h1>🍽 ZESTRO</h1>
 
-<!-- MENU ITEMS -->
-
 <div class="menu-card">
-  🍯 Royal Jamun Delight - ₹50
-  <button onclick="addToCart('Royal Jamun Delight',50)">Add</button>
+  🍮 Gulab Jamun - ₹60
+  <button onclick="addToCart('Gulab Jamun',60)">Add</button>
 </div>
 
 <div class="menu-card">
-  🌮 Chaat Fusion Crunch - ₹30
-  <button onclick="addToCart('Chaat Fusion Crunch',30)">Add</button>
+  🍨 Ice Cream - ₹40
+  <button onclick="addToCart('Ice Cream',40)">Add</button>
 </div>
 
 <div class="menu-card">
-  🧠 Brain Buster - ₹15
-  <button onclick="addToCart('Brain Buster',15)">Add</button>
+  🍟 Chips - ₹30
+  <button onclick="addToCart('Chips',30)">Add</button>
 </div>
-
-
-
-<!-- CART -->
 
 <div id="cart">
   <h2>🛒 Your Cart</h2>
@@ -125,15 +125,20 @@
   <button class="checkout-btn" onclick="showQR()">Checkout</button>
 </div>
 
-<!-- QR SECTION -->
-
 <div id="qr-section">
-  <h2>📲 Scan & Pay</h2>
-  <div class="amount-display">Pay ₹<span id="final-amount"></span></div>
+  <h2>📲 Choose Payment App</h2>
+
+  <div class="app-buttons">
+    <button onclick="selectApp('PhonePe')">📱 PhonePe</button>
+    <button onclick="selectApp('Google Pay')">💳 GPay</button>
+    <button onclick="selectApp('Paytm')">🏦 Paytm</button>
+  </div>
+
   <img src="upi-qr.png" alt="UPI QR Code">
+
   <div class="thank-you">
-    🎉 Thank you for ordering from ZESTRO! <br>
-    Please complete the payment and show confirmation at the counter.
+    ⚠ Please enter the total amount manually in your selected app.<br>
+    🎉 Thank you for ordering from ZESTRO!
   </div>
 </div>
 
@@ -163,7 +168,10 @@
     }
 
     document.getElementById("qr-section").style.display = "block";
-    document.getElementById("final-amount").innerText = total;
+  }
+
+  function selectApp(appName){
+    alert("You selected " + appName + ". Please scan the QR and enter ₹" + total + " manually.");
   }
 </script>
 
