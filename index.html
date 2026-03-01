@@ -91,27 +91,40 @@
       font-size: 16px;
       color: #4caf50;
     }
-
   </style>
 </head>
 <body>
 
 <h1>🍽 ZESTRO</h1>
 
+<!-- MENU ITEMS -->
+
 <div class="menu-card">
-  🍮 Gulab Jamun - ₹60
-  <button onclick="addToCart('Gulab Jamun',60)">Add</button>
+  🍯 Royal Jamun Delight - ₹50
+  <button onclick="addToCart('Royal Jamun Delight',50)">Add</button>
 </div>
 
 <div class="menu-card">
-  🍨 Ice Cream - ₹40
-  <button onclick="addToCart('Ice Cream',40)">Add</button>
+  🌮 Chaat Fusion Crunch - ₹30
+  <button onclick="addToCart('Chaat Fusion Crunch',30)">Add</button>
 </div>
 
 <div class="menu-card">
-  🍟 Chips - ₹30
-  <button onclick="addToCart('Chips',30)">Add</button>
+  🧠 Brain Buster (Mini Snack) - ₹15
+  <button onclick="addToCart('Brain Buster',15)">Add</button>
 </div>
+
+<div class="menu-card">
+  🍨 Ice Cream Bliss - ₹40
+  <button onclick="addToCart('Ice Cream Bliss',40)">Add</button>
+</div>
+
+<div class="menu-card">
+  🍟 Crunchy Chips - ₹30
+  <button onclick="addToCart('Crunchy Chips',30)">Add</button>
+</div>
+
+<!-- CART -->
 
 <div id="cart">
   <h2>🛒 Your Cart</h2>
@@ -119,6 +132,8 @@
   <div><strong>Total: ₹<span id="total">0</span></strong></div>
   <button class="checkout-btn" onclick="showQR()">Checkout</button>
 </div>
+
+<!-- QR SECTION -->
 
 <div id="qr-section">
   <h2>📲 Scan & Pay</h2>
