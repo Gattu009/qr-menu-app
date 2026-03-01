@@ -47,10 +47,6 @@
       margin-left: 5px;
     }
 
-    .btn-group button:hover {
-      opacity: 0.9;
-    }
-
     #cart {
       margin-top: 30px;
       background: #2e2e2e;
@@ -70,41 +66,65 @@
       cursor: pointer;
     }
 
-    #bill-section {
+    /* BILL STYLE */
+
+    #bill-screen {
       display: none;
-      margin-top: 40px;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .bill {
       background: #2e2e2e;
+      width: 350px;
       padding: 25px;
       border-radius: 15px;
+      text-align: center;
       animation: fadeIn 0.4s ease-in-out;
     }
 
-    .bill-header {
-      text-align: center;
-      font-size: 22px;
-      margin-bottom: 15px;
+    .bill h2 {
+      margin-bottom: 10px;
       letter-spacing: 2px;
     }
 
     .bill-item {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 8px;
+      margin: 8px 0;
+      font-size: 14px;
     }
 
-    .total-amount {
-      margin-top: 15px;
-      font-size: 20px;
+    .bill hr {
+      border: 0.5px solid #555;
+      margin: 10px 0;
+    }
+
+    .total {
+      font-size: 18px;
       font-weight: bold;
       color: #ffb347;
-      text-align: right;
+      margin-top: 10px;
     }
 
-    .payment-note {
+    .note {
+      font-size: 13px;
       margin-top: 15px;
-      text-align: center;
       color: #4caf50;
-      font-size: 14px;
+    }
+
+    .reorder-btn {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      background: #ff5722;
+      color: white;
+      cursor: pointer;
+      font-weight: 500;
     }
 
     @keyframes fadeIn {
@@ -115,15 +135,15 @@
 </head>
 <body>
 
-<h1>🍽 ZESTRO</h1>
+<div id="main-screen">
 
-<!-- MENU ITEMS -->
+<h1>🍽 ZESTRO</h1>
 
 <div class="menu-card">
   🍯 Royal Jamun Delight - ₹50
   <div class="btn-group">
     <button onclick="addItem('Royal Jamun Delight',50)">+</button>
-    <button onclick="removeItem('Royal Jamun Delight',50)">-</button>
+    <button onclick="removeItem('Royal Jamun Delight')">-</button>
   </div>
 </div>
 
@@ -131,7 +151,7 @@
   🌮 Chaat Fusion Crunch - ₹30
   <div class="btn-group">
     <button onclick="addItem('Chaat Fusion Crunch',30)">+</button>
-    <button onclick="removeItem('Chaat Fusion Crunch',30)">-</button>
+    <button onclick="removeItem('Chaat Fusion Crunch')">-</button>
   </div>
 </div>
 
@@ -139,11 +159,9 @@
   🧠 Brain Buster - ₹15
   <div class="btn-group">
     <button onclick="addItem('Brain Buster',15)">+</button>
-    <button onclick="removeItem('Brain Buster',15)">-</button>
+    <button onclick="removeItem('Brain Buster')">-</button>
   </div>
 </div>
-
-<!-- CART -->
 
 <div id="cart">
   <h2>🛒 Your Cart</h2>
@@ -152,15 +170,23 @@
   <button class="checkout-btn" onclick="generateBill()">Checkout</button>
 </div>
 
-<!-- BILL SECTION -->
+</div>
 
-<div id="bill-section">
-  <div class="bill-header">🧾 ZESTRO BILL</div>
-  <div id="bill-items"></div>
-  <div class="total-amount">Total: ₹<span id="bill-total"></span></div>
-  <div class="payment-note">
-    💳 Payment should be done at the counter.<br>
-    Please show this bill while paying.
+<!-- BILL FULL SCREEN -->
+
+<div id="bill-screen">
+  <div class="bill">
+    <h2>ZESTRO</h2>
+    <p>Restaurant Bill</p>
+    <hr>
+    <div id="bill-items"></div>
+    <hr>
+    <div class="total">Total: ₹<span id="bill-total"></span></div>
+    <div class="note">
+      Payment should be done at the counter.<br>
+      Please show this bill while paying.
+    </div>
+    <button class="reorder-btn" onclick="reorder()">Reorder Again</button>
   </div>
 </div>
 
@@ -176,7 +202,7 @@
     updateCart();
   }
 
-  function removeItem(name, price) {
+  function removeItem(name) {
     if (cart[name]) {
       cart[name].quantity--;
       if (cart[name].quantity <= 0) {
@@ -194,24 +220,20 @@
     for (let item in cart) {
       let itemTotal = cart[item].price * cart[item].quantity;
       total += itemTotal;
-
-      cartDiv.innerHTML += 
-        `<div>${item} x${cart[item].quantity} - ₹${itemTotal}</div>`;
+      cartDiv.innerHTML += `<div>${item} x${cart[item].quantity} - ₹${itemTotal}</div>`;
     }
 
     document.getElementById("total").innerText = total;
   }
 
   function generateBill() {
-    let billSection = document.getElementById("bill-section");
-    let billItems = document.getElementById("bill-items");
-    let total = 0;
-
     if (Object.keys(cart).length === 0) {
       alert("Cart is empty!");
       return;
     }
 
+    let billItems = document.getElementById("bill-items");
+    let total = 0;
     billItems.innerHTML = "";
 
     for (let item in cart) {
@@ -226,7 +248,16 @@
     }
 
     document.getElementById("bill-total").innerText = total;
-    billSection.style.display = "block";
+
+    document.getElementById("main-screen").style.display = "none";
+    document.getElementById("bill-screen").style.display = "flex";
+  }
+
+  function reorder() {
+    cart = {};
+    document.getElementById("bill-screen").style.display = "none";
+    document.getElementById("main-screen").style.display = "block";
+    updateCart();
   }
 </script>
 
