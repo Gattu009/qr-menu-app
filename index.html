@@ -20,6 +20,8 @@
       margin-bottom: 30px;
     }
 
+    /* MENU CARD */
+
     .menu-card {
       background: #2e2e2e;
       padding: 15px;
@@ -28,6 +30,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 10px;
       transition: 0.3s;
     }
 
@@ -36,16 +39,29 @@
       transform: scale(1.02);
     }
 
+    .menu-card span {
+      flex: 1;
+      min-width: 0;
+      font-size: 14px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
     .btn-group button {
       background: #ff5722;
       border: none;
-      padding: 6px 12px;
+      padding: 6px 10px;
       border-radius: 6px;
       color: white;
       cursor: pointer;
       font-weight: 500;
-      margin-left: 5px;
     }
+
+    /* CART */
 
     #cart {
       margin-top: 30px;
@@ -66,12 +82,11 @@
       cursor: pointer;
     }
 
-    /* BILL STYLE */
+    /* BILL SCREEN */
 
     #bill-screen {
       display: none;
       height: 100vh;
-      display: flex;
       justify-content: center;
       align-items: center;
     }
@@ -79,6 +94,7 @@
     .bill {
       background: #2e2e2e;
       width: 350px;
+      max-width: 95%;
       padding: 25px;
       border-radius: 15px;
       text-align: center;
@@ -86,8 +102,17 @@
     }
 
     .bill h2 {
-      margin-bottom: 10px;
+      margin-bottom: 5px;
       letter-spacing: 2px;
+    }
+
+    .qr-code {
+      width: 160px;
+      margin: 10px auto;
+      display: block;
+      background: white;
+      padding: 8px;
+      border-radius: 10px;
     }
 
     .bill-item {
@@ -127,6 +152,19 @@
       font-weight: 500;
     }
 
+    /* MOBILE TWEAK */
+
+    @media (max-width: 480px) {
+      .menu-card span {
+        font-size: 13px;
+      }
+
+      .btn-group button {
+        padding: 5px 8px;
+        font-size: 13px;
+      }
+    }
+
     @keyframes fadeIn {
       from {opacity: 0; transform: translateY(10px);}
       to {opacity: 1; transform: translateY(0);}
@@ -137,10 +175,10 @@
 
 <div id="main-screen">
 
-<h1>🍽 ZESTRO</h1> 
+<h1>🍽 ZESTRO</h1>
 
 <div class="menu-card">
-  🍯 Jamun Delight - ₹50
+  <span>🍯 Royal Jamun Delight - ₹50</span>
   <div class="btn-group">
     <button onclick="addItem('Royal Jamun Delight',50)">+</button>
     <button onclick="removeItem('Royal Jamun Delight')">-</button>
@@ -148,7 +186,7 @@
 </div>
 
 <div class="menu-card">
-  🌮 Chaat Fusion Crunch - ₹30
+  <span>🌮 Chaat Fusion Crunch - ₹30</span>
   <div class="btn-group">
     <button onclick="addItem('Chaat Fusion Crunch',30)">+</button>
     <button onclick="removeItem('Chaat Fusion Crunch')">-</button>
@@ -156,7 +194,7 @@
 </div>
 
 <div class="menu-card">
-  🧠 Brain Buster - ₹15
+  <span>🧠 Brain Buster - ₹15</span>
   <div class="btn-group">
     <button onclick="addItem('Brain Buster',15)">+</button>
     <button onclick="removeItem('Brain Buster')">-</button>
@@ -176,17 +214,27 @@
 
 <div id="bill-screen">
   <div class="bill">
+
     <h2>ZESTRO</h2>
     <p>Restaurant Bill</p>
+
+    <img src="upi-qr.png" alt="UPI QR Code" class="qr-code">
+
     <hr>
+
     <div id="bill-items"></div>
+
     <hr>
+
     <div class="total">Total: ₹<span id="bill-total"></span></div>
+
     <div class="note">
-      Payment should be done at the counter.<br>
+      📲 Scan the QR or pay at the counter.<br>
       Please show this bill while paying.
     </div>
+
     <button class="reorder-btn" onclick="reorder()">Reorder Again</button>
+
   </div>
 </div>
 
